@@ -64,7 +64,23 @@
                 </div>
             </footer>
             <!-- End of Footer -->
+            <ul style="display: none">
+                @foreach ($errors->all() as $error)
+                    <li class="text-error">{{ $error .'<br>' }}</li>
+                @endforeach
+            </ul>
 
+            @if(session()->has('success'))
+                <div class="" style="display: none">
+                    <p class="text_succes">{{ session()->get('success') }}</p>
+                </div>
+            @endif
+
+            @if(session()->has('error'))
+                <div class="" style="display: none">
+                    <p class="text_error_fc">{{ session()->get('error') }}</p>
+                </div>
+            @endif
         </div>
         <!-- End of Content Wrapper -->
 
@@ -81,13 +97,46 @@
 
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }} "></script>
+    <script src="{{ asset('js/blockUI.js') }}"></script>
+    <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }} "></script>
 
     <!-- Core plugin JavaScript-->
     <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }} "></script>
 
     <!-- Custom scripts for all pages-->
+    @stack('js')
     <script src="{{ asset('js/sb-admin-2.min.js') }}  "></script>
+    <script src="{{ asset('js/custom_datatable.js') }}  "></script>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let text_error = $('.text-error').text();
+        if(text_error != ''){
+            Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            html: text_error,
+            })
+        }
+        let text_success = $('.text_succes').text();
+        if(text_success != ''){
+            Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            html: text_success,
+            })
+        }
+
+        let text_error_from_controller = $('.text_error_fc').text();
+        if(text_error_from_controller != ''){
+            Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            html: text_error_from_controller,
+            })
+        }
+    </script>
 </body>
 
 </html>

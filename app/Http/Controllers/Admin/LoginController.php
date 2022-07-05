@@ -14,7 +14,7 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             User::where('email', $request['email'])->first();
-            return redirect('dashboard');
+            return redirect('master/books');
         }
         return redirect(route('login'));
     }

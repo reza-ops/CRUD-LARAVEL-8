@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route('login'));
 });
 
 // custom redirec loggin
@@ -24,3 +25,13 @@ Route::post('logged_in', [LoginController::class, 'authenticate'])->name('logged
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::group([
+    'prefix'    => 'master',
+    'as'        => 'master.',
+    ], function () {
+        Route::resource('books', BookController::class)->except('show','destroy');
+        Route::get('books/get_data', [BookController::class, 'getData'])->name('books.get_data');
+        Route::get('books/delete/{data_id}', [BookController::class, 'delete'])->name('books.delete');
+    }
+);
